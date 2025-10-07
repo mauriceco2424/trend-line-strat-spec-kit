@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+*.log
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Cache directories
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+
+# Spec kit & CLI caches
+.claude/
+.lh/
+.specify/
+spec-kit-temp/
+
+# Data artefacts
+/data/cache/
+/data/db/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+spec-kit/
