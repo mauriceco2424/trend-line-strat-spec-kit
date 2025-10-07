@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trend-line-strat/specs/breakout-detection.json",
+  "title": "Breakout Detection Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trendline_id", "breakouts"],
+  "properties": {
+    "trendline_id": { "type": "string", "format": "uuid" },
+    "breakouts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "direction",
+          "timestamp",
+          "price",
+          "confirmation_stage",
+          "volume",
+          "volume_average",
+          "stages"
+        ],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "direction": { "type": "string", "enum": ["upward", "downward"] },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "price": { "type": "number", "exclusiveMinimum": 0 },
+          "confirmation_stage": { "type": "integer", "minimum": 1, "maximum": 3 },
+          "volume": { "type": "number", "minimum": 0 },
+          "volume_average": { "type": "number", "minimum": 0 },
+          "stages": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["initial_break"],
+            "properties": {
+              "initial_break": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["timestamp", "price", "close_above_line"],
+                "properties": {
+                  "timestamp": { "type": "string", "format": "date-time" },
+                  "price": { "type": "number" },
+                  "close_above_line": { "type": "boolean" }
+                }
+              },
+              "retest": {
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "required": ["timestamp", "price"],
+                "properties": {
+                  "timestamp": { "type": "string", "format": "date-time" },
+                  "price": { "type": "number" }
+                }
+              },
+              "rejection": {
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "required": ["timestamp", "price", "magnitude_pct"],
+                "properties": {
+                  "timestamp": { "type": "string", "format": "date-time" },
+                  "price": { "type": "number" },
+                  "magnitude_pct": { "type": "number", "minimum": 0 }
+                }
+              }
+            }
+          },
+          "higher_timeframe_alignment": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["timeframes", "is_confirmed"],
+            "properties": {
+              "timeframes": {
+                "type": "array",
+                "items": { "type": "string", "enum": ["1h", "4h", "daily", "weekly"] }
+              },
+              "is_confirmed": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

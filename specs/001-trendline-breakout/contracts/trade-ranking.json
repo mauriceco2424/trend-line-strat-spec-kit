@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trend-line-strat/specs/trade-ranking.json",
+  "title": "Trade Ranking Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["generated_at", "setups"],
+  "properties": {
+    "generated_at": { "type": "string", "format": "date-time" },
+    "setups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "trendline_id",
+          "breakout_id",
+          "confidence_score",
+          "quality_score",
+          "confluence_strength",
+          "timeframe",
+          "a_plus",
+          "confirmation_factors",
+          "supply_demand_alignment"
+        ],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "trendline_id": { "type": "string", "format": "uuid" },
+          "breakout_id": { "type": "string", "format": "uuid" },
+          "timeframe": { "type": "string", "enum": ["1h", "4h", "daily", "weekly"] },
+          "confidence_score": { "type": "number", "minimum": 0, "maximum": 100 },
+          "quality_score": { "type": "number", "minimum": 0, "maximum": 100 },
+          "confluence_strength": { "type": "number", "minimum": 0, "maximum": 100 },
+          "a_plus": { "type": "boolean" },
+          "supply_demand_alignment": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["is_aligned", "distance_pct", "level_ids"],
+            "properties": {
+              "is_aligned": { "type": "boolean" },
+              "distance_pct": { "type": "number", "minimum": 0, "maximum": 2 },
+              "level_ids": {
+                "type": "array",
+                "items": { "type": "string", "format": "uuid" }
+              }
+            }
+          },
+          "confirmation_factors": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "rank": { "type": "integer", "minimum": 1 }
+        }
+      }
+    }
+  }
+}

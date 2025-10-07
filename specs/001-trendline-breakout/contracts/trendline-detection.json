@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trend-line-strat/specs/trendline-detection.json",
+  "title": "Trendline Detection Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["pair_symbol", "timeframe", "trendlines"],
+  "properties": {
+    "pair_symbol": { "type": "string", "minLength": 1 },
+    "timeframe": { "type": "string", "enum": ["1h", "4h", "daily", "weekly"] },
+    "trendlines": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "direction",
+          "touch_points",
+          "slope",
+          "intercept",
+          "r_squared",
+          "quality_score",
+          "created_at",
+          "last_updated",
+          "is_valid"
+        ],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "direction": { "type": "string", "enum": ["support", "resistance"] },
+          "timeframe": { "type": "string", "enum": ["1h", "4h", "daily", "weekly"] },
+          "touch_points": {
+            "type": "array",
+            "minItems": 3,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "timestamp",
+                "price",
+                "distance_from_line",
+                "is_confirmed",
+                "candle_type"
+              ],
+              "properties": {
+                "id": { "type": "string", "format": "uuid" },
+                "timestamp": { "type": "string", "format": "date-time" },
+                "price": { "type": "number", "exclusiveMinimum": 0 },
+                "distance_from_line": { "type": "number", "minimum": -5, "maximum": 5 },
+                "is_confirmed": { "type": "boolean" },
+                "candle_type": { "type": "string", "enum": ["wick", "body"] },
+                "candles_since_previous": { "type": ["integer", "null"], "minimum": 0 }
+              }
+            }
+          },
+          "slope": { "type": "number" },
+          "intercept": { "type": "number" },
+          "r_squared": { "type": "number", "minimum": 0, "maximum": 1 },
+          "quality_score": { "type": "number", "minimum": 0, "maximum": 100 },
+          "created_at": { "type": "string", "format": "date-time" },
+          "last_updated": { "type": "string", "format": "date-time" },
+          "is_valid": { "type": "boolean" },
+          "touch_distribution_score": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+          "age_days": { "type": ["number", "null"], "minimum": 0 }
+        }
+      }
+    }
+  }
+}

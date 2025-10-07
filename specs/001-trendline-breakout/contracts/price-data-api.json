@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trend-line-strat/specs/price-data-api.json",
+  "title": "Price Data API Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["symbol", "timeframe", "candles", "metadata"],
+  "properties": {
+    "symbol": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timeframe": {
+      "type": "string",
+      "enum": ["1h", "4h", "daily", "weekly"]
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generated_at", "source", "bars"],
+      "properties": {
+        "generated_at": { "type": "string", "format": "date-time" },
+        "source": { "type": "string", "minLength": 1 },
+        "bars": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "candles": {
+      "type": "array",
+      "minItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "timestamp",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "open": { "type": "number" },
+          "high": { "type": "number" },
+          "low": { "type": "number" },
+          "close": { "type": "number" },
+          "volume": { "type": "number", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

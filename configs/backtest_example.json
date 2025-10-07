@@ -1,0 +1,6 @@
+{
+  "pair_symbol": "ETHUSDT",
+  "timeframe": "4h",
+  "universe_size": 25,
+  "initial_balance": 10000
+}
